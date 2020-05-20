@@ -12,9 +12,44 @@ namespace TicTacToe
 {
     public partial class Form1 : Form
     {
+
+        bool XplayerTurn = true;
+
         public Form1()
         {
             InitializeComponent();
+            InitializeGrid();
+            InitializeCells();
+        }
+
+        private void InitializeGrid()
+        {
+            Grid.BackColor = Color.LightPink;
+            Grid.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
+        }
+
+        private void InitializeCells()
+        {
+            string labelName;
+            for(int i = 1; i <=9; i++)
+            {
+                labelName = "label" + i;
+                Grid.Controls[labelName].Text = string.Empty;
+            }
+        }
+
+        private void Player_Click(object sender, EventArgs e)
+        {
+            Label label = (Label)sender;
+            if (XplayerTurn)
+            {
+                label.Text = "X";
+            }
+            else
+            {
+                label.Text = "O";
+            }
+            XplayerTurn = !XplayerTurn;
         }
     }
 }
