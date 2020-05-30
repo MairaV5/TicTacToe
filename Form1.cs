@@ -12,8 +12,8 @@ namespace TicTacToe
 {
     public partial class Form1 : Form
     {
-
         bool XplayerTurn = true;
+        int turnCount = 0;
 
         public Form1()
         {
@@ -28,6 +28,12 @@ namespace TicTacToe
             Grid.CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble;
         }
 
+        private void RestartGame()
+        {
+            InitializeCells();
+            turnCount = 0;
+        }
+
         private void InitializeCells()
         {
             string labelName;
@@ -35,6 +41,7 @@ namespace TicTacToe
             {
                 labelName = "label" + i;
                 Grid.Controls[labelName].Text = string.Empty;
+                Grid.Controls[labelName].BackColor = Color.Transparent;
             }
         }
 
@@ -56,24 +63,78 @@ namespace TicTacToe
                 label.Text = "O";
             }
             CheckForWin();
+            turnCount++;
+            CheckForDraw();
             XplayerTurn = !XplayerTurn;
         }
 
         private void CheckForWin()
         {
             if (
-                  (label1.Text == label2.Text && label2.Text == label3.Text && label1.Text != string.Empty) ||
-                  (label4.Text == label5.Text && label5.Text == label6.Text && label4.Text != string.Empty) ||
-                  (label7.Text == label8.Text && label8.Text == label9.Text && label7.Text != string.Empty) ||
-                  (label1.Text == label4.Text && label4.Text == label7.Text && label1.Text != string.Empty) ||
-                  (label2.Text == label5.Text && label5.Text == label8.Text && label2.Text != string.Empty) ||
-                  (label3.Text == label6.Text && label6.Text == label9.Text && label3.Text != string.Empty) ||
-                  (label1.Text == label5.Text && label5.Text == label9.Text && label1.Text != string.Empty) ||
-                  (label3.Text == label5.Text && label5.Text == label7.Text && label3.Text != string.Empty)
+                  (label1.Text == label2.Text && label2.Text == label3.Text && label1.Text != String.Empty) ||
+                  (label4.Text == label5.Text && label5.Text == label6.Text && label4.Text != String.Empty) ||
+                  (label7.Text == label8.Text && label8.Text == label9.Text && label7.Text != String.Empty) ||
+                  (label1.Text == label4.Text && label4.Text == label7.Text && label1.Text != String.Empty) ||
+                  (label2.Text == label5.Text && label5.Text == label8.Text && label2.Text != String.Empty) ||
+                  (label3.Text == label6.Text && label6.Text == label9.Text && label3.Text != String.Empty) ||
+                  (label1.Text == label5.Text && label5.Text == label9.Text && label1.Text != String.Empty) ||
+                  (label3.Text == label5.Text && label5.Text == label7.Text && label3.Text != String.Empty)
                )
             {
                 GameOver();
             }
+        }
+
+        private void WinnerCellsChangeColor()
+        {
+            if (label1.Text == label2.Text && label1.Text == label3.Text && label1.Text != "")
+            {
+                ChangeCellColors(label1, label2, label3, Color.DeepSkyBlue);
+            }
+            else if (label4.Text == label5.Text && label4.Text == label6.Text && label4.Text != "")
+            {
+                ChangeCellColors(label4, label5, label6, Color.DeepSkyBlue);
+            }
+            else if (label7.Text == label8.Text && label7.Text == label9.Text && label7.Text != "")
+            {
+                ChangeCellColors(label7, label8, label9, Color.DeepSkyBlue);
+            }
+            else if (label1.Text == label4.Text && label1.Text == label7.Text && label1.Text != "")
+            {
+                ChangeCellColors(label1, label4, label7, Color.DeepSkyBlue);
+            }
+            else if (label2.Text == label5.Text && label2.Text == label8.Text && label2.Text != "")
+            {
+                ChangeCellColors(label2, label5, label8, Color.DeepSkyBlue);
+            }
+            else if (label3.Text == label6.Text && label3.Text == label9.Text && label3.Text != "")
+            {
+                ChangeCellColors(label3, label6, label9, Color.DeepSkyBlue);
+            }
+            else if (label1.Text == label5.Text && label1.Text == label9.Text && label1.Text != "")
+            {
+                ChangeCellColors(label1, label5, label9, Color.DeepSkyBlue);
+            }
+            else if (label3.Text == label5.Text && label3.Text == label7.Text && label3.Text != "")
+            {
+                ChangeCellColors(label3, label5, label7, Color.DeepSkyBlue);
+            }
+        }
+
+        private void CheckForDraw()
+        {
+            if(turnCount == 9)
+            {
+                MessageBox.Show("Ou well it is a draw!");
+                RestartGame();
+            }
+        }
+
+        private void ChangeCellColors(Label firstLabel, Label secondLabel, Label thirdLabel, Color color)
+        {
+            firstLabel.BackColor = color;
+            secondLabel.BackColor = color;
+            thirdLabel.BackColor = color;
         }
 
         private void GameOver()
@@ -87,7 +148,9 @@ namespace TicTacToe
             {
                 winner = "O";
             }
-            MessageBox.Show(winner + "wins!");
+            WinnerCellsChangeColor();
+            MessageBox.Show(winner + " wins! ");
+            RestartGame();
         }
     }
 }
