@@ -62,8 +62,9 @@ namespace TicTacToe
             {
                 label.Text = "O";
             }
-            CheckForWin();
             turnCount++;
+            PlaySound();
+            CheckForWin();
             CheckForDraw();
             XplayerTurn = !XplayerTurn;
         }
@@ -151,6 +152,13 @@ namespace TicTacToe
             WinnerCellsChangeColor();
             MessageBox.Show(winner + " wins! ");
             RestartGame();
+        }
+
+        private void PlaySound()
+        {
+            System.IO.Stream str = Properties.Resources.click_sound_wav;
+            System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
+            snd.Play();
         }
     }
 }
